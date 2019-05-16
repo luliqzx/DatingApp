@@ -26,8 +26,32 @@
       <li class="nav-item">
         <a class="nav-link " href="#">Messages</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link "(click)='logout()'>Logout</a>
+      </li>
     </ul>
+
+    <div *ngIf="loggedIn()" class="dropdown">
+      <a
+        class="btn dropdown-toggle"
+        href="#"
+        role="button"
+        id="dropdownMenuLink"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        Welcome User
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="#">Edit Profile</a>
+        <a class="dropdown-item" href="#">Logout</a>
+      </div>
+    </div>
+
     <form
+      *ngIf="!loggedIn()"
       #loginForm="ngForm"
       class="form-inline my-2 my-lg-0"
       (ngSubmit)="login()"
