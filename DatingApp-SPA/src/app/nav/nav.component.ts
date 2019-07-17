@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "../_services/auth.service";
+import { error } from "@angular/compiler/src/util";
 
 @Component({
-  selector: 'app-nav',
-  templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  selector: "app-nav",
+  templateUrl: "./nav.component.html",
+  styleUrls: ["./nav.component.css"]
 })
 export class NavComponent implements OnInit {
   model: any = {};
@@ -18,18 +19,21 @@ export class NavComponent implements OnInit {
       next => {
         console.log('Logged in successfully');
       },
+
       error => {
-        console.log('Failed to login');
+        // console.log("Failed to login");
+        console.log(error);
+
       }
     );
   }
 
   loggedIn() {
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem("token");
     return !!token;
   }
   logout() {
-    localStorage.removeItem('token');
-    console.log('User logout');
+    localStorage.removeItem("token");
+    console.log("User logout");
   }
 }

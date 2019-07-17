@@ -13,7 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 namespace DatingApp.API.Controllers {
     [Route ("api/[controller]")]
     [ApiController]
-
     public class AuthController : ControllerBase {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
@@ -24,8 +23,7 @@ namespace DatingApp.API.Controllers {
         }
 
         [HttpPost ("register")]
-        public async Task<IActionResult> Register (UserForRegisterDto userForRegisterDto) {
-            // validate request
+        public async Task<IActionResult> Register (UserForRegisterDto userForRegisterDto) { // validate request
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower ();
             if (await _repo.UserExists (userForRegisterDto.Username))
                 return BadRequest ("Username already exists");
@@ -40,6 +38,7 @@ namespace DatingApp.API.Controllers {
 
         [HttpPost ("login")]
         public async Task<IActionResult> Login (UserForLoginDto userForLoginDto) {
+
             var userRepo = await _repo.Login (userForLoginDto.Username, userForLoginDto.Password);
 
             if (userRepo == null) {
@@ -51,8 +50,7 @@ namespace DatingApp.API.Controllers {
                 new Claim (ClaimTypes.Name, userRepo.Username)
             };
 
-            var key = new SymmetricSecurityKey (Encoding.UTF8
-                .GetBytes (_config.GetSection ("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (_config.GetSection ("AppSettings:Token").Value));
 
             var creds = new SigningCredentials (key, SecurityAlgorithms.HmacSha512Signature);
 
