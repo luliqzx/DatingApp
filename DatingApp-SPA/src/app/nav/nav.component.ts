@@ -11,7 +11,7 @@ import { AlertifyService } from '../_services/alertify.service';
 export class NavComponent implements OnInit {
   model: any = {};
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private alertify: AlertifyService
   ) {}
 
@@ -24,6 +24,7 @@ export class NavComponent implements OnInit {
         this.alertify.success('Logged in successfully');
       },
 
+      // tslint:disable-next-line: no-shadowed-variable
       error => {
         // console.log("Failed to login");
         this.alertify.error(error);
@@ -32,8 +33,9 @@ export class NavComponent implements OnInit {
   }
 
   loggedIn() {
-    const token = localStorage.getItem('token');
-    return !!token;
+    // const token = localStorage.getItem('token');
+    // return !!token;
+    return this.authService.loggedin();
   }
   logout() {
     localStorage.removeItem('token');
