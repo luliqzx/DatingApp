@@ -34,6 +34,7 @@ namespace DatingApp.API {
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
             services.AddCors ();
 
+            services.AddTransient<Seed> ();
             services.AddScoped<IAuthRepository, AuthRepository> ();
 
             services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme)
@@ -49,7 +50,7 @@ namespace DatingApp.API {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure (IApplicationBuilder app, IHostingEnvironment env, Seed seeder) {
             if (env.IsDevelopment ()) {
                 app.UseDeveloperExceptionPage ();
             } else {
@@ -59,7 +60,7 @@ namespace DatingApp.API {
                         context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                         var error = context.Features.Get<IExceptionHandlerFeature> ();
                         if (error != null) {
-                            context.Response.AddApplicationError(error.Error.Message);
+                            context.Response.AddApplicationError (error.Error.Message);
                             await context.Response.WriteAsync (error.Error.Message);
                         }
 
@@ -68,6 +69,7 @@ namespace DatingApp.API {
             }
 
             // app.UseHttpsRedirection();
+            seeder.SeedUsers ();
             app.UseCors (x => x.AllowAnyOrigin ().AllowAnyMethod ().AllowAnyHeader ());
             app.UseAuthentication ();
             app.UseMvc ();
